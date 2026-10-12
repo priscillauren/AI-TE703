@@ -1,18 +1,23 @@
 # AI-TE703
 
 ## Introduction
-(Penjelasan singkat program: apa yang dibuat, search algorithm apa yang dipakai, dan expert system untuk apa.)
+Program ini adalah sistem pakar untuk merekomendasikan karier berdasarkan minat dan kemampuan pengguna. Pengguna menjawab serangkaian pertanyaan, lalu sistem menggunakan aturan if-then (forward chaining) untuk menentukan karier yang paling sesuai, misalnya Software Engineer, Data Analyst, atau UI/UX Designer.
+
+Program juga menerapkan algoritma BFS (Breadth-First Search) untuk mencari jalur pengembangan karier tersingkat dari kondisi pengguna menuju karier yang direkomendasikan.
 
 ## Requirements
-- (Bahasa, misalnya Python 3.x)
-- (Library yang dipakai, atau tulis "Tidak ada library tambahan")
+- Python 3.x
+- Tidak ada library tambahan
 
 ## How to Use
 1. Clone repository:
    `git clone https://github.com/priscillauren/AI-TE703.git`
-2. Masuk ke folder proyek.
+2. Masuk ke folder proyek:
+   `cd AI-TE703`
 3. Jalankan program:
    `python main.py`
+4. Jawab pertanyaan yang muncul dengan `y` (yes) atau `n` (no).
+5. Sistem akan menampilkan rekomendasi karier beserta jalur pengembangannya.
 
 ## Running
-(Screenshot hasil running, diisi setelah program jadi.)
+(Tempel screenshot hasil running di sini setelah program jadi.)
