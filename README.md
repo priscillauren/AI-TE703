@@ -20,4 +20,4 @@ Program juga menerapkan algoritma BFS (Breadth-First Search) untuk mencari jalur
 5. Sistem akan menampilkan rekomendasi karier beserta jalur pengembangannya.
 
 ## Running
-(Tempel screenshot hasil running di sini setelah program jadi.)
+(Tempel screenshot hasil running di sini setelah program jadi)
