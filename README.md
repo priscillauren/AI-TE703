@@ -14,6 +14,15 @@ Proyek ini terdiri dari dua program:
 Instal library dengan:
 `pip install pygame numpy pillow`
 
+## Sources
+1. **Sistem Pakar Rekomendasi Karier**:
+- ashcode028/Career-prediction — https://github.com/ashcode028/Career-prediction
+Deskripsi: program Python dengan modul durable-rules dan aturan forward chaining untuk sistem penasihat karier.
+- Sarthak-10/Career-Advisory-System-with-forward-chaining-rules — https://github.com/Sarthak-10/Career-Advisory-System-with-forward-chaining-rules
+Deskripsi: proyek yang memakai modul durable-rules untuk membuat sistem penasihat karier dengan aturan forward chaining.
+2. **Pathfinding Visualizer**: https://github.com/Jitanshu-commits/Pathfinding
+Proyek ini merupakan visualisasi interaktif dari algoritma-algoritma pencarian jalur (pathfinding algorithms) pada kisi 2D (grid). Program ini dirancang untuk mensimulasikan dan membandingkan bagaimana berbagai algoritma pencarian menavigasi rute dari titik awal (start) ke titik tujuan (end) sambil melewati rintangan atau dinding.
+
 ## How to Use
 1. Clone repository:
    `git clone https://github.com/priscillauren/AI-TE703.git`
