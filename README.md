@@ -11,7 +11,7 @@ Proyek ini terdiri dari dua program:
 - numpy
 - Pillow
 
-Instal library dengan:
+Install library dengan:
 `pip install pygame numpy pillow`
 
 ## Sources
@@ -28,7 +28,7 @@ Proyek ini merupakan visualisasi interaktif dari algoritma-algoritma pencarian j
    `git clone https://github.com/priscillauren/AI-TE703.git`
 2. Masuk ke folder proyek:
    `cd AI-TE703`
-3. Instal library (lihat Requirements).
+3. Install library (lihat requirements).
 4. Jalankan sistem pakar:
    `python expert_system/sistem_pakar_karier.py`
 5. Jalankan pathfinding visualizer (harus dari dalam folder `search_algorithm`):
