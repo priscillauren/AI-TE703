@@ -222,10 +222,10 @@ Sel yang dikunjungi berwarna **oranye**, sedangkan area **hitam** adalah sel yan
 ├── main.py          # Skrip utama (logika algoritma, UI, dan event loop)
 ├── STARTEND.png     # Ikon penanda titik awal & akhir
 ├── images/          # Screenshot hasil running untuk dokumentasi
-│   ├── search_algorithm.png          # Hasil A*
-│   ├── HASIL_RUNNING_DIJKSTRA.jpeg   # Hasil Dijkstra
-│   ├── HASIL_RUNNING_BFS.jpeg        # Hasil BFS
-│   └── HASIL_RUNNING_DFS.jpeg        # Hasil DFS
+│   ![Hasil running A*](search_algorithm.png)
+![Hasil running Dijkstra](HASIL_RUNNING_DIJKSTRA.jpeg)
+![Hasil running BFS](HASIL_RUNNING_BFS.jpeg)
+![Hasil running DFS](HASIL_RUNNING_DFS.jpeg)
 ├── maze.png         # (dibuat otomatis) hasil screenshot saat menekan "S"
 └── README.md
 ```
