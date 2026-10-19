@@ -59,6 +59,8 @@ def draw_grid():
 
 # Function to draw a colored cell at a specific position with elevation effect
 def draw_cell(color, position):
+    if not (0 <= position[0] * CELL_SIZE < SCREEN_SIZE[0] and 0 <= position[1] * CELL_SIZE < SCREEN_SIZE[1]):
+        return
     # Check if the cell color is yellow (indicating it belongs to the path)
     if color == YELLOW or color == RED or color == GRAY:
         # If the cell color is yellow, draw the cell without applying the darkness effect
@@ -69,7 +71,7 @@ def draw_cell(color, position):
         distance_y = GRID_SIZE - 1 - position[1]
         max_distance = max(distance_x, distance_y)  # Maximum possible distance
         # Calculate darkness factor based on distance
-        darkness_factor = (max_distance / (GRID_SIZE - 1)) ** 2  # Adjust as desired, e.g., using a power function
+        darkness_factor = 0  # Adjust as desired, e.g., using a power function
         # Darken the color based on darkness factor
         elevated_color = (
             int(color[0] * (1 - darkness_factor)),
@@ -82,7 +84,7 @@ def draw_cell(color, position):
         current_color = screen.get_at((position[0] * CELL_SIZE + CELL_SIZE // 2, position[1] * CELL_SIZE + CELL_SIZE // 2))
         
         # Interpolate between the current color and the elevated color for smooth transition
-        transition_frames = 10  # Number of frames for transition
+        transition_frames = 1  # Number of frames for transition
         for i in range(transition_frames + 1):
             # Calculate interpolation factor
             t = i / transition_frames
@@ -357,7 +359,7 @@ def remove_obstacle(cell, obstacles):
             pygame.draw.line(screen, WHITE, (x_pixel, y_pixel), (x_pixel + CELL_SIZE, y_pixel))
         
         # Redraw the horizontal line below the removed obstacle
-        if y < GRID_SIZE - 1:
+        if x < SCREEN_SIZE[0] // CELL_SIZE - 1:
             pygame.draw.line(screen, WHITE, (x_pixel, y_pixel + CELL_SIZE), (x_pixel + CELL_SIZE, y_pixel + CELL_SIZE))
         
         # Redraw the vertical line to the left of the removed obstacle
@@ -365,7 +367,7 @@ def remove_obstacle(cell, obstacles):
             pygame.draw.line(screen, WHITE, (x_pixel, y_pixel), (x_pixel, y_pixel + CELL_SIZE))
         
         # Redraw the vertical line to the right of the removed obstacle
-        if x < GRID_SIZE - 1:
+        if x < SCREEN_SIZE[0] // CELL_SIZE - 1:
             pygame.draw.line(screen, WHITE, (x_pixel + CELL_SIZE, y_pixel), (x_pixel + CELL_SIZE, y_pixel + CELL_SIZE))
         
         pygame.display.flip()  # Update the display
