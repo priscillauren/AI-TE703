@@ -19,7 +19,6 @@ Aplikasi visualisasi algoritma pencarian jalur (*pathfinding*) pada grid 2D, dib
 - [Cara Kerja Singkat](#-cara-kerja-singkat)
 - [Konfigurasi](#-konfigurasi)
 - [Batasan & Catatan](#-batasan--catatan)
-- [Pengembangan Selanjutnya](#-pengembangan-selanjutnya)
 - [Sumber & Kredit](#-sumber--kredit)
 - [Kontribusi](#-kontribusi)
 
