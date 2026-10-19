@@ -223,10 +223,10 @@ search_algorithm/
 ├── Algorithm Sketch(script)          # Dokumen pendukung
 ├── Practicalities of Pathfinding(POP)# Dokumen pendukung
 ├── Pseudocode (Logic Description)    # Dokumen pendukung (pseudocode)
-├── search_algorithm.png              # Screenshot hasil A*
-├── HASIL RUNNING DIJKSTRA.jpeg       # Screenshot hasil Dijkstra
-├── HASIL RUNNING BFS.jpeg            # Screenshot hasil BFS
-├── HASIL RUNNING DFS.jpeg            # Screenshot hasil DFS
+![Hasil running A*](search_algorithm/search_algorithm.png)
+![Hasil running Dijkstra](search_algorithm/HASIL%20RUNNING%20DIJKSTRA.jpeg)
+![Hasil running BFS](search_algorithm/HASIL%20RUNNING%20BFS.jpeg)
+![Hasil running DFS](search_algorithm/HASIL%20RUNNING%20DFS.jpeg)
 ├── maze.png                          # (dibuat otomatis) screenshot saat menekan "S"
 └── README.md
 ```
