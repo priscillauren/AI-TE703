@@ -84,10 +84,16 @@ Aplikasi visualisasi algoritma pencarian jalur (*pathfinding*) pada grid 2D, dib
 
 ```bash
    git clone https://github.com/irvashellaurbach-png/AI-TE703.git
-   cd AI-TE703/search_algorithm
+   cd AI-TE703
 ```
 
-2. **(Opsional) Buat virtual environment**
+2. **Masuk ke folder proyek**
+
+```bash
+   cd search_algorithm
+```
+
+3. **(Opsional) Buat virtual environment**
 
 ```bash
    python -m venv venv
@@ -97,19 +103,19 @@ Aplikasi visualisasi algoritma pencarian jalur (*pathfinding*) pada grid 2D, dib
    source venv/bin/activate
 ```
 
-3. **Pasang dependensi**
+4. **Pasang dependensi**
 
 ```bash
    pip install pygame pillow numpy
 ```
 
-4. **Khusus Linux** (jika Tkinter belum ada):
+5. **Khusus Linux** (jika Tkinter belum ada):
 
 ```bash
    sudo apt install python3-tk
 ```
 
-5. Pastikan file `STARTEND.png` berada di folder yang sama dengan skrip utama.
+6. Pastikan file `STARTEND.png` berada di folder yang sama dengan skrip utama.
 
 ---
 
@@ -149,25 +155,25 @@ Semua pengujian memakai skenario yang sama: sebuah **dinding vertikal (abu-abu)*
 
 ### 1. A\* (A-Star)
 
-![Hasil running A*](search_algorithm.png)
+![Hasil running A*](search_algorithm/search_algorithm.png)
 
 Sel yang dikunjungi berwarna **biru** dan jalur akhir berwarna **kuning**. A\* dipandu heuristik jarak Manhattan sehingga penjelajahannya terarah ke titik tujuan. Ketika terhalang dinding, A\* berputar mengelilingi ujung dinding lalu naik ke titik tujuan. Jalur yang dihasilkan adalah **jalur terpendek**.
 
 ### 2. Dijkstra
 
-![Hasil running Dijkstra](HASIL%20RUNNING%20DIJKSTRA.jpeg)
+![Hasil running Dijkstra](search_algorithm/HASIL%20RUNNING%20DIJKSTRA.jpeg)
 
 Sel yang dikunjungi berwarna **hijau**. Dijkstra menyebar ke **segala arah secara merata** (tanpa heuristik) sehingga hampir seluruh grid terjelajahi sebelum tujuan ditemukan. Jalur kuning mengitari ujung bawah dinding dan berakhir di titik tujuan. Jalur yang dihasilkan adalah **jalur terpendek**.
 
 ### 3. BFS (Breadth-First Search)
 
-![Hasil running BFS](HASIL%20RUNNING%20BFS.jpeg)
+![Hasil running BFS](search_algorithm/HASIL%20RUNNING%20BFS.jpeg)
 
 Sel yang dikunjungi berwarna **ungu**. BFS menjelajah **lapis demi lapis** dari titik awal sehingga pola penyebarannya mirip Dijkstra. Jalur kuning juga melewati celah di bawah dinding. Panjang jalurnya **sama dengan Dijkstra** karena pada grid tanpa bobot keduanya sama-sama optimal; bentuk jalur bisa sedikit berbeda karena urutan tetangga yang diproses.
 
 ### 4. DFS (Depth-First Search)
 
-![Hasil running DFS](HASIL%20RUNNING%20DFS.jpeg)
+![Hasil running DFS](search_algorithm/HASIL%20RUNNING%20DFS.jpeg)
 
 Sel yang dikunjungi berwarna **oranye**, sedangkan area **hitam** adalah sel yang tidak pernah dikunjungi. DFS menyelam sedalam mungkin sebelum mundur dan urutan tetangganya diacak, sehingga jalur kuning yang dihasilkan **sangat berkelok dan panjang**. Inilah alasan DFS **tidak menjamin jalur terpendek**, dan hasilnya bisa berbeda setiap kali dijalankan.
 
@@ -217,18 +223,19 @@ Sel yang dikunjungi berwarna **oranye**, sedangkan area **hitam** adalah sel yan
 ## 🗂️ Struktur Proyek
 
 ```
-search_algorithm/
-├── Pathfinder.Comparison.py          # Skrip utama (algoritma, UI, dan event loop)
-├── STARTEND.png                      # Ikon penanda titik awal & akhir
-├── Algorithm Sketch(script)          # Dokumen pendukung
-├── Practicalities of Pathfinding(POP)# Dokumen pendukung
-├── Pseudocode (Logic Description)    # Dokumen pendukung (pseudocode)
-![Hasil running A*](search_algorithm/search_algorithm.png)
-![Hasil running Dijkstra](search_algorithm/HASIL%20RUNNING%20DIJKSTRA.jpeg)
-![Hasil running BFS](search_algorithm/HASIL%20RUNNING%20BFS.jpeg)
-![Hasil running DFS](search_algorithm/HASIL%20RUNNING%20DFS.jpeg)
-├── maze.png                          # (dibuat otomatis) screenshot saat menekan "S"
-└── README.md
+AI-TE703/
+├── README.md                              # Dokumentasi proyek (file ini)
+└── search_algorithm/
+    ├── Pathfinder.Comparison.py           # Skrip utama (algoritma, UI, dan event loop)
+    ├── STARTEND.png                       # Ikon penanda titik awal & akhir
+    ├── Algorithm Sketch(script)           # Dokumen pendukung
+    ├── Practicalities of Pathfinding(POP) # Dokumen pendukung
+    ├── Pseudocode (Logic Description)     # Dokumen pendukung (pseudocode)
+    ├── search_algorithm.png               # Screenshot hasil A*
+    ├── HASIL RUNNING DIJKSTRA.jpeg        # Screenshot hasil Dijkstra
+    ├── HASIL RUNNING BFS.jpeg             # Screenshot hasil BFS
+    ├── HASIL RUNNING DFS.jpeg             # Screenshot hasil DFS
+    └── maze.png                           # (dibuat otomatis) screenshot saat menekan "S"
 ```
 
 ### Fungsi-fungsi utama
@@ -300,8 +307,8 @@ Beberapa konstanta di bagian atas kode dapat kamu ubah:
 - Mengubah **Cell Size** lewat slider hanya menggambar ulang grid; untuk hasil terbaik, atur sebelum memilih algoritma.
 - Tekan `ESC` saat algoritma berjalan untuk menghentikannya.
 
----
 
+---
 
 ## 📚 Sumber & Kredit
 
@@ -335,5 +342,28 @@ Terima kasih kepada pembuat repository sumber atas kode dasarnya. Seluruh hak at
 ### Alur Kerja Kontribusi
 
 Setiap kontributor bekerja di branch masing-masing, lalu digabung ke `main` lewat *Pull Request*.
+
+1. *Clone* repository dan pindah ke branch kamu:
+
+```bash
+   git clone https://github.com/irvashellaurbach-png/AI-TE703.git
+   cd AI-TE703
+   git checkout dev1
+```
+
+2. Lakukan perubahan, lalu *commit*:
+
+```bash
+   git add .
+   git commit -m "Deskripsi perubahan"
+```
+
+3. *Push* ke branch:
+
+```bash
+   git push origin dev1
+```
+
+4. Buka *Pull Request* dari `dev1` ke `main` di GitHub.
 
 Saran dan laporan masalah juga diterima lewat tab **Issues**.
