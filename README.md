@@ -29,6 +29,10 @@ Instal library dengan:
 
 ## Running
 <img width="1168" height="773" alt="Screenshot (359)" src="https://github.com/user-attachments/assets/12aa2d91-1034-4f2a-8a8c-d873576ac3d1" />
-<img width="995" height="755" alt="Screenshot (363)" src="https://github.com/user-attachments/assets/971b7872-56c3-41c1-aa2b-fb44b5f02d42" />
+<img width="983" height="770" alt="a" src="https://github.com/user-attachments/assets/ce523cad-7307-4baf-96dd-c7154e0f35e6" />
+<img width="990" height="781" alt="dji" src="https://github.com/user-attachments/assets/98ccdb47-cb18-41f4-9815-1049e5e8d61e" />
+<img width="988" height="772" alt="bfs" src="https://github.com/user-attachments/assets/9d361871-0f42-4bf5-a282-3ca896e69ade" />
+<img width="997" height="783" alt="dfs" src="https://github.com/user-attachments/assets/34fcbbe9-a498-4c65-a19e-a15cd0aee50a" />
+
 
 
