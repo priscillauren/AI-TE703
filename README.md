@@ -1,157 +1,339 @@
-<div align="center">
+# 🧭 Pathfinding Visualization
 
-# Pathfinding Visualizer
-
-**A\* · Dijkstra · BFS · DFS**
-
-Bagian **Dev 1** dari proyek [AI-TE703](https://github.com/priscillauren/AI-TE703)
-
-![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
-![Library](https://img.shields.io/badge/GUI-pygame-green)
-![Algoritma](https://img.shields.io/badge/Algoritma-A*%20%7C%20Dijkstra%20%7C%20BFS%20%7C%20DFS-orange)
-
-</div>
+Aplikasi visualisasi algoritma pencarian jalur (*pathfinding*) pada grid 2D, dibuat dengan **Python**, **Pygame**, dan **Tkinter**. Kamu bisa menggambar rintangan sendiri, menentukan titik awal dan akhir, lalu melihat langkah demi langkah bagaimana tiap algoritma menjelajahi grid untuk menemukan jalur.
 
 ---
 
-## Daftar Isi
+## 📑 Daftar Isi
 
-1. [Introduction](#introduction)
-2. [Algoritma yang Dibandingkan](#algoritma-yang-dibandingkan)
-3. [Requirements](#requirements)
-4. [Struktur Folder](#struktur-folder)
-5. [How to Use](#how-to-use)
-6. [Running](#running)
-7. [Sources](#sources)
-8. [Kontributor](#kontributor)
-
----
-
-## Introduction
-
-Program ini adalah visualisasi interaktif algoritma pencarian jalur (*pathfinding*) pada grid 2D. Program mensimulasikan dan membandingkan bagaimana berbagai algoritma menavigasi rute dari **titik awal (start)** ke **titik tujuan (end)** sambil melewati rintangan atau dinding.
-
-Dengan visualisasi, perbedaan antar algoritma bisa dilihat langsung: sel mana saja yang dijelajahi dan seberapa panjang jalur akhirnya. Hal ini lebih mudah dipahami daripada hanya membaca teori.
-
-**Tujuan program:** membandingkan cara kerja dan hasil empat algoritma pencarian jalur pada masalah yang sama.
+- [Fitur](#-fitur)
+- [Algoritma yang Tersedia](#-algoritma-yang-tersedia)
+- [Tampilan & Kode Warna](#-tampilan--kode-warna)
+- [Persyaratan](#-persyaratan)
+- [Instalasi](#-instalasi)
+- [Cara Menjalankan](#-cara-menjalankan)
+- [Cara Penggunaan](#-cara-penggunaan)
+- [Hasil Running](#-hasil-running)
+- [Kontrol Keyboard & Mouse](#-kontrol-keyboard--mouse)
+- [Struktur Proyek](#-struktur-proyek)
+- [Cara Kerja Singkat](#-cara-kerja-singkat)
+- [Konfigurasi](#-konfigurasi)
+- [Batasan & Catatan](#-batasan--catatan)
+- [Sumber & Kredit](#-sumber--kredit)
+- [Kontribusi](#-kontribusi)
 
 ---
 
-## Algoritma yang Dibandingkan
+## ✨ Fitur
 
-| Algoritma | Cara kerja singkat | Menjamin jalur terpendek? |
-|---|---|:-:|
-| **A\*** | Menjelajah dengan bantuan heuristik (perkiraan jarak ke tujuan), sehingga biasanya menjelajah lebih sedikit sel. | Ya, jika heuristiknya admissible |
-| **Dijkstra** | Selalu memperluas sel dengan biaya terkecil lebih dulu, menjelajah ke segala arah. | Ya |
-| **BFS** | Menjelajah lapis demi lapis dari titik awal. | Ya, pada grid tanpa bobot |
-| **DFS** | Menyelam sedalam mungkin pada satu arah sebelum mundur. | Tidak |
-
-**Ringkasannya:**
-- A\* dan Dijkstra sama-sama optimal, tetapi A\* biasanya lebih hemat penjelajahan.
-- BFS cocok untuk grid tanpa bobot, tetapi menjelajah banyak sel.
-- DFS bisa cepat menemukan jalur, tetapi jalurnya sering panjang dan berkelok.
-
----
-
-## Requirements
-
-| Kebutuhan | Keterangan |
-|---|---|
-| Python | Versi 3.x |
-| pygame | Menampilkan jendela GUI dan animasi |
-| numpy | Pengelolaan data grid |
-| Pillow | Pengolahan gambar |
-
-Install semua library sekaligus:
-
-```
-pip install pygame numpy pillow
-```
+- **4 algoritma pathfinding**: A\*, Dijkstra, BFS, dan DFS.
+- **Menu pemilihan algoritma** berbasis Tkinter, lengkap dengan pengaturan awal.
+- **Gambar rintangan sendiri** dengan mouse (klik dan geser).
+- **Generator maze acak** (±30% sel menjadi rintangan).
+- **Atur kecepatan visualisasi** lewat slider maupun keyboard.
+- **Mode *Smooth Transitions*** untuk animasi sel yang dikunjungi.
+- **Pause / Resume** saat algoritma sedang berjalan.
+- **Pengukur waktu eksekusi** yang dicetak di terminal.
+- **Simpan screenshot** grid ke `maze.png` dengan satu tombol.
+- Pindah algoritma dengan cepat memakai shortcut angka `1`–`4`.
+- Notifikasi jika titik tujuan **tidak dapat dijangkau**.
 
 ---
 
-## Struktur Folder
+## 🧠 Algoritma yang Tersedia
 
-```
-AI-TE703/
-├── search_algorithm/
-│   ├── Pathfinder.Comparison.py    # program utama
-│   └── README.md                   # dokumen ini
-├── expert_system/                  # bagian Dev 2
-├── screenshots/                    # gambar hasil running
-└── README.md                       # README utama proyek
-```
+| Algoritma | Warna Sel Dikunjungi | Jalur Terpendek? | Strategi |
+|-----------|----------------------|------------------|----------|
+| **A\*** | 🔵 Biru | ✅ Ya | Priority queue dengan `cost + heuristic` (jarak Manhattan) |
+| **Dijkstra** | 🟢 Hijau | ✅ Ya | Priority queue berdasarkan cost kumulatif |
+| **BFS** | 🟣 Ungu | ✅ Ya (grid tanpa bobot) | Antrian FIFO, menjelajah per lapisan |
+| **DFS** | 🟠 Oranye | ❌ Tidak | Stack LIFO, urutan tetangga diacak (`random.shuffle`) |
+
+> **Catatan:** Pada grid ini setiap langkah berbiaya 1, sehingga Dijkstra dan BFS menghasilkan panjang jalur yang sama. Perbedaannya terletak pada struktur data yang dipakai. A\* biasanya mengunjungi lebih sedikit sel karena dipandu oleh heuristik.
 
 ---
 
-## How to Use
+## 🎨 Tampilan & Kode Warna
 
-**1. Clone repository**
+| Warna | Arti |
+|-------|------|
+| ⬛ Hitam | Sel kosong / belum dikunjungi |
+| ⬜ Putih | Garis grid |
+| 🔘 Abu-abu | Rintangan (obstacle) |
+| 🟢 / 🔵 / 🟣 / 🟠 | Sel yang sudah dikunjungi (sesuai algoritma) |
+| 🟡 Kuning | Jalur akhir yang ditemukan |
+| 🖼️ Ikon `STARTEND.png` | Titik awal dan titik akhir |
 
+---
+
+## 📦 Persyaratan
+
+- **Python 3.8+**
+- Library:
+  - [`pygame`](https://www.pygame.org/) – grafis dan input
+  - [`Pillow`](https://python-pillow.org/) – membuka screenshot
+  - [`numpy`](https://numpy.org/) – operasi matematika
+- **Tkinter** (bawaan Python di Windows & macOS; di Linux mungkin perlu dipasang terpisah)
+- File gambar **`STARTEND.png`** di folder yang sama dengan skrip (dipakai sebagai ikon titik awal/akhir).
+
+---
+
+## 🔧 Instalasi
+
+1. **Clone repository**
+
+```bash
+   git clone https://github.com/irvashellaurbach-png/AI-TE703.git
+   cd AI-TE703/search_algorithm
 ```
-git clone https://github.com/priscillauren/AI-TE703.git
+
+2. **(Opsional) Buat virtual environment**
+
+```bash
+   python -m venv venv
+   # Windows
+   venv\Scripts\activate
+   # macOS / Linux
+   source venv/bin/activate
 ```
 
-**2. Masuk ke folder program**
+3. **Pasang dependensi**
 
-Program harus dijalankan dari **dalam** folder `search_algorithm`.
-
-```
-cd AI-TE703/search_algorithm
+```bash
+   pip install pygame pillow numpy
 ```
 
-**3. Install library**
+4. **Khusus Linux** (jika Tkinter belum ada):
 
-```
-pip install pygame numpy pillow
+```bash
+   sudo apt install python3-tk
 ```
 
-**4. Jalankan program**
+5. Pastikan file `STARTEND.png` berada di folder yang sama dengan skrip utama.
 
-```
+---
+
+## ▶️ Cara Menjalankan
+
+Dari dalam folder `search_algorithm`, jalankan:
+
+```bash
 python Pathfinder.Comparison.py
 ```
 
-**5. Ikuti instruksi di layar**
+---
 
-Pilih algoritma lewat jendela GUI, lalu amati bagaimana algoritma tersebut mencari jalur dari start ke end.
+## 🕹️ Cara Penggunaan
 
-> **Catatan:** kalau muncul error file atau gambar tidak ditemukan, hampir selalu penyebabnya program dijalankan dari folder yang salah. Pastikan terminal berada di dalam `search_algorithm`.
+1. **Jalankan program.** Jendela menu *Algorithm Selection* akan muncul.
+2. Atur opsi di menu:
+   - **Maze** – centang untuk membuat rintangan acak otomatis.
+   - **Visualization Delay** – slider 0–200 ms (makin kecil makin cepat).
+   - **Smooth Transitions** – animasi halus pada sel yang dikunjungi.
+   - **Cell Size** – ukuran sel (20–50 px).
+3. Klik salah satu tombol algoritma: **A\***, **Dijkstra's**, **BFS**, atau **DFS**.
+4. Pada jendela grid:
+   1. **Klik kiri pertama** → menentukan **titik awal**.
+   2. **Klik kiri kedua** → menentukan **titik akhir**.
+   3. **Klik kiri berikutnya** (boleh sambil digeser) → menggambar **rintangan**.
+   4. **Klik kanan** pada rintangan → menghapusnya.
+5. Tekan **`SPACE`** untuk menjalankan algoritma.
+6. Setelah selesai, jalur akan digambar **kuning** dan waktu eksekusi tampil di terminal.
+7. Tekan **`C`** untuk mengosongkan grid dan mencoba lagi.
 
 ---
 
-## Running
+## 📸 Hasil Running
 
-Contoh tampilan program saat dijalankan:
+Semua pengujian memakai skenario yang sama: sebuah **dinding vertikal (abu-abu)** di tengah grid dengan celah di bagian bawah, sehingga algoritma harus berputar mengelilingi dinding untuk mencapai **titik tujuan (ikon merah) di pojok kanan atas**.
 
-| A\* | Dijkstra |
-|:-:|:-:|
-| <img width="420" alt="A*" src="https://github.com/user-attachments/assets/ce523cad-7307-4baf-96dd-c7154e0f35e6" /> | <img width="420" alt="Dijkstra" src="https://github.com/user-attachments/assets/98ccdb47-cb18-41f4-9815-1049e5e8d61e" /> |
+### 1. A\* (A-Star)
 
-| BFS | DFS |
-|:-:|:-:|
-| <img width="420" alt="BFS" src="https://github.com/user-attachments/assets/9d361871-0f42-4bf5-a282-3ca896e69ade" /> | <img width="420" alt="DFS" src="https://github.com/user-attachments/assets/34fcbbe9-a498-4c65-a19e-a15cd0aee50a" /> |
+![Hasil running A*](search_algorithm.png)
+
+Sel yang dikunjungi berwarna **biru** dan jalur akhir berwarna **kuning**. A\* dipandu heuristik jarak Manhattan sehingga penjelajahannya terarah ke titik tujuan. Ketika terhalang dinding, A\* berputar mengelilingi ujung dinding lalu naik ke titik tujuan. Jalur yang dihasilkan adalah **jalur terpendek**.
+
+### 2. Dijkstra
+
+![Hasil running Dijkstra](HASIL%20RUNNING%20DIJKSTRA.jpeg)
+
+Sel yang dikunjungi berwarna **hijau**. Dijkstra menyebar ke **segala arah secara merata** (tanpa heuristik) sehingga hampir seluruh grid terjelajahi sebelum tujuan ditemukan. Jalur kuning mengitari ujung bawah dinding dan berakhir di titik tujuan. Jalur yang dihasilkan adalah **jalur terpendek**.
+
+### 3. BFS (Breadth-First Search)
+
+![Hasil running BFS](HASIL%20RUNNING%20BFS.jpeg)
+
+Sel yang dikunjungi berwarna **ungu**. BFS menjelajah **lapis demi lapis** dari titik awal sehingga pola penyebarannya mirip Dijkstra. Jalur kuning juga melewati celah di bawah dinding. Panjang jalurnya **sama dengan Dijkstra** karena pada grid tanpa bobot keduanya sama-sama optimal; bentuk jalur bisa sedikit berbeda karena urutan tetangga yang diproses.
+
+### 4. DFS (Depth-First Search)
+
+![Hasil running DFS](HASIL%20RUNNING%20DFS.jpeg)
+
+Sel yang dikunjungi berwarna **oranye**, sedangkan area **hitam** adalah sel yang tidak pernah dikunjungi. DFS menyelam sedalam mungkin sebelum mundur dan urutan tetangganya diacak, sehingga jalur kuning yang dihasilkan **sangat berkelok dan panjang**. Inilah alasan DFS **tidak menjamin jalur terpendek**, dan hasilnya bisa berbeda setiap kali dijalankan.
+
+### Perbandingan Singkat
+
+| Algoritma | Warna | Pola Penjelajahan | Jalur Akhir |
+|-----------|-------|-------------------|-------------|
+| A\* | 🔵 Biru | Terarah ke tujuan (heuristik) | Terpendek |
+| Dijkstra | 🟢 Hijau | Menyebar merata ke segala arah | Terpendek |
+| BFS | 🟣 Ungu | Menyebar lapis demi lapis | Terpendek |
+| DFS | 🟠 Oranye | Menyelam dalam, acak | Panjang & berkelok (tidak optimal) |
 
 ---
 
-## Sources
+## ⌨️ Kontrol Keyboard & Mouse
 
-| Repository | Deskripsi |
+### Mouse
+
+| Aksi | Fungsi |
+|------|--------|
+| Klik kiri (1×) | Set titik awal |
+| Klik kiri (2×) | Set titik akhir |
+| Klik kiri + geser | Gambar rintangan |
+| Klik kanan | Hapus rintangan |
+
+### Keyboard
+
+| Tombol | Fungsi |
+|--------|--------|
+| `SPACE` | Jalankan algoritma terpilih |
+| `P` | Pause / Resume (saat algoritma berjalan) |
+| `ESC` | Saat algoritma berjalan: hentikan. Saat idle: buka menu pemilihan |
+| `C` | Bersihkan grid & reset titik awal/akhir |
+| `M` | Generate maze acak |
+| `S` | Simpan screenshot ke `maze.png` dan tampilkan |
+| `1` | Pilih A\* |
+| `2` | Pilih Dijkstra |
+| `3` | Pilih BFS |
+| `4` | Pilih DFS |
+| `+` / `=` | Tambah delay visualisasi (+10 ms) |
+| `-` | Kurangi delay visualisasi (−10 ms) |
+| `9` | Tambah delay sel dikunjungi (+10 ms) |
+| `0` | Kurangi delay sel dikunjungi (−10 ms) |
+
+---
+
+## 🗂️ Struktur Proyek
+
+```
+search_algorithm/
+├── Pathfinder.Comparison.py          # Skrip utama (algoritma, UI, dan event loop)
+├── STARTEND.png                      # Ikon penanda titik awal & akhir
+├── Algorithm Sketch(script)          # Dokumen pendukung
+├── Practicalities of Pathfinding(POP)# Dokumen pendukung
+├── Pseudocode (Logic Description)    # Dokumen pendukung (pseudocode)
+├── search_algorithm.png              # Screenshot hasil A*
+├── HASIL RUNNING DIJKSTRA.jpeg       # Screenshot hasil Dijkstra
+├── HASIL RUNNING BFS.jpeg            # Screenshot hasil BFS
+├── HASIL RUNNING DFS.jpeg            # Screenshot hasil DFS
+├── maze.png                          # (dibuat otomatis) screenshot saat menekan "S"
+└── README.md
+```
+
+### Fungsi-fungsi utama
+
+| Fungsi | Deskripsi |
+|--------|-----------|
+| `create_menu()` | Membuat menu Tkinter (pilihan algoritma, slider delay & ukuran sel) |
+| `run_algorithm()` | *Main loop* Pygame: menangani mouse, keyboard, dan menjalankan algoritma |
+| `astar()` / `dijkstra()` / `bfs()` / `dfs()` | Implementasi masing-masing algoritma beserta visualisasinya |
+| `heuristic()` | Heuristik jarak Manhattan untuk A\* |
+| `neighbors()` | Mengembalikan tetangga valid (atas, bawah, kiri, kanan) |
+| `generate_random_maze()` | Mengisi grid dengan rintangan acak |
+| `draw_grid()` / `draw_cell()` | Menggambar grid dan sel berwarna |
+| `visualize_path()` | Menganimasikan jalur akhir berwarna kuning |
+| `remove_obstacle()` | Menghapus rintangan dan menggambar ulang garis grid |
+| `reset()` | Mengosongkan layar dan menggambar ulang grid |
+
+---
+
+## ⚙️ Cara Kerja Singkat
+
+Setiap algoritma menyimpan *frontier* (sel yang akan dikunjungi) beserta **jalur yang ditempuh** untuk mencapainya:
+
+- **BFS** memakai `deque` sebagai antrian → sel dikunjungi berdasarkan jumlah langkah terkecil.
+- **DFS** memakai `list` sebagai stack → menyelam sedalam mungkin sebelum mundur; urutan tetangga diacak sehingga jalur bisa berbeda tiap dijalankan.
+- **Dijkstra** memakai `heapq` dengan prioritas `cost` (jumlah langkah dari titik awal).
+- **A\*** memakai `heapq` dengan prioritas `cost + heuristic`, di mana heuristik adalah **jarak Manhattan** ke tujuan:
+
+```
+  h(n) = |x_n − x_goal| + |y_n − y_goal|
+```
+
+Ketika sel tujuan ditemukan, jalur yang tersimpan digambar dengan warna kuning. Bila frontier habis sebelum tujuan ditemukan, muncul pesan **"End node not reachable!"**.
+
+### Kompleksitas (V = jumlah sel, E = jumlah sisi)
+
+| Algoritma | Waktu | Optimal |
+|-----------|-------|---------|
+| BFS | O(V + E) | Ya (grid tanpa bobot) |
+| DFS | O(V + E) | Tidak |
+| Dijkstra | O((V + E) log V) | Ya |
+| A\* | Bergantung heuristik, O((V + E) log V) kasus terburuk | Ya (heuristik admissible) |
+
+---
+
+## 🛠️ Konfigurasi
+
+Beberapa konstanta di bagian atas kode dapat kamu ubah:
+
+| Konstanta | Default | Keterangan |
+|-----------|---------|------------|
+| `GRID_SIZE` | `100` | Jumlah sel per sisi pada grid logis |
+| `CELL_SIZE` | `20` | Ukuran satu sel dalam piksel |
+| `SCREEN_SIZE` | `(800, 600)` | Ukuran jendela Pygame (alternatif: `1278, 660`) |
+| `DELAY` | `50` | Jeda (ms) antar langkah visualisasi |
+| `DELAY_VISITED` | `0` | Jeda (ms) tambahan saat menggambar sel dikunjungi |
+| Probabilitas maze | `0.3` | Di `generate_random_maze()`, ubah `random.random() < 0.3` |
+
+> 💡 **Tips benchmark:** untuk membandingkan kecepatan murni antar algoritma, set `DELAY` dan `DELAY_VISITED` ke `0` dan matikan *Smooth Transitions*.
+
+---
+
+## ⚠️ Batasan & Catatan
+
+- Pastikan titik awal dan titik akhir berada **di dalam area grid yang terlihat di jendela**. Jika `GRID_SIZE` lebih besar dari area layar (`SCREEN_SIZE` ÷ `CELL_SIZE`), sebagian grid tidak tampil.
+- Waktu yang dicetak di terminal **sudah termasuk delay visualisasi**, sehingga bukan ukuran performa murni algoritma kecuali delay diatur ke 0.
+- Pergerakan hanya **4 arah** (atas, bawah, kiri, kanan), tanpa diagonal.
+- Program memerlukan file `STARTEND.png`; tanpa file tersebut, pemasangan titik awal/akhir akan menimbulkan error.
+- Mengubah **Cell Size** lewat slider hanya menggambar ulang grid; untuk hasil terbaik, atur sebelum memilih algoritma.
+- Tekan `ESC` saat algoritma berjalan untuk menghentikannya.
+
+---
+
+
+## 📚 Sumber & Kredit
+
+Proyek ini dikembangkan berdasarkan repository open source berikut:
+
+| | |
 |---|---|
-| [Jitanshu-commits/Pathfinding](https://github.com/Jitanshu-commits/Pathfinding) | Visualisasi interaktif algoritma pencarian jalur pada kisi 2D (grid) yang mensimulasikan dan membandingkan bagaimana berbagai algoritma menavigasi rute dari titik awal ke tujuan di antara rintangan. |
+| **Repository sumber** | [Jitanshu-commits/Pathfinding](https://github.com/Jitanshu-commits/Pathfinding) |
+| **Pemilik** | [@Jitanshu-commits](https://github.com/Jitanshu-commits) |
+| **Deskripsi** | Visualisasi pathfinding dengan Dijkstra, A\*, BFS, dan DFS menggunakan Pygame |
+
+Fitur dasar yang berasal dari repository sumber meliputi: visualisasi algoritma di grid, menu pemilihan algoritma, generator maze acak, slider delay dan ukuran grid, pause/resume, hotkey pemilihan algoritma, serta penyimpanan screenshot.
+
+Terima kasih kepada pembuat repository sumber atas kode dasarnya. Seluruh hak atas kode asli tetap dimiliki oleh pembuat aslinya.
 
 ---
 
-## Kontributor
+## 🤝 Kontribusi
 
-| Peran | Nama | GitHub |
-|---|---|---|
-| Dev 1 | irva | @irvashellaurbach-png |
+### Tim Kontributor
 
----
+| Peran | Nama | GitHub | Branch |
+|-------|------|--------|--------|
+| **Dev 1** | Irva Shella Urbach | [@irvashellaurbach-png](https://github.com/irvashellaurbach-png) | [`dev1`](https://github.com/irvashellaurbach-png/AI-TE703/tree/dev1) |
 
-<div align="center">
+### Kontribusi Dev 1
 
-Bagian dari proyek **AI-TE703**
+- Perbaikan batas grid (*grid bounds*) dan error pada fungsi `draw_cell`
+- Dokumentasi proyek (README) dan screenshot hasil running tiap algoritma
 
-</div>
+### Alur Kerja Kontribusi
+
+Setiap kontributor bekerja di branch masing-masing, lalu digabung ke `main` lewat *Pull Request*.
+
+Saran dan laporan masalah juga diterima lewat tab **Issues**.
