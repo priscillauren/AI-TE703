@@ -139,13 +139,15 @@ Ketik `y` jika **ya** atau `n` jika **tidak**, lalu tekan Enter. Setelah semua p
 > 💡 **Tips:** jalankan dari folder utama proyek (`AI-TE703`), bukan dari dalam folder `expert_system`, agar path pada perintah di atas sesuai.
 
 ---
+
 ## 🖼️ Running
 
 Contoh tampilan program saat dijalankan:
 
-![Hasil running sistem pakar](../screenshots/expert_system.png)
+<!-- Ganti nama file di bawah dengan nama screenshot yang ada di folder screenshots/ -->
+![Hasil running sistem pakar](../screenshots/sistem_pakar.png)
 
-
+---
 
 ## 📚 Sources
 
@@ -162,7 +164,7 @@ Referensi yang dipakai sebagai acuan dalam membuat sistem pakar ini:
 
 | Peran | Nama | GitHub | Branch |
 |---|---|---|---|
-| Dev 2 | _isi nama_ | [@zasq-zehan](https://github.com/zasq-zehan) | `dev2` |
+| Dev 2 | zasq | [@zasq-zehan](https://github.com/zasq-zehan) | `dev2` |
 
 ---
 
