@@ -146,7 +146,7 @@ Contoh tampilan program saat dijalankan:
 
 | Peran | Nama | GitHub | Branch |
 |---|---|---|---|
-| Dev 1 | irva | [@irvashellaurbach-png](https://github.com/irvashellaurbach-png) | `dev1` |
+| Dev 1 | Irva Shella Urbach | [@irvashellaurbach-png](https://github.com/irvashellaurbach-png) | `dev1` |
 
 ---
 
