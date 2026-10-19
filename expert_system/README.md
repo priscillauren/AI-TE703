@@ -144,8 +144,7 @@ Ketik `y` jika **ya** atau `n` jika **tidak**, lalu tekan Enter. Setelah semua p
 
 Contoh tampilan program saat dijalankan:
 
-<!-- Ganti nama file di bawah dengan nama screenshot yang ada di folder screenshots/ -->
-![Hasil running sistem pakar](../screenshots/sistem_pakar.png)
+![Hasil running sistem pakar](../screenshots/expert_system.png)
 
 ---
 
