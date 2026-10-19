@@ -21,7 +21,7 @@ Aplikasi visualisasi algoritma pencarian jalur (*pathfinding*) pada grid 2D, dib
 - [Batasan & Catatan](#-batasan--catatan)
 - [Pengembangan Selanjutnya](#-pengembangan-selanjutnya)
 - [Kontribusi](#-kontribusi)
-- [Lisensi](#-lisensi)
+- [Penulis](#-penulis)
 
 ---
 
@@ -73,7 +73,7 @@ Aplikasi visualisasi algoritma pencarian jalur (*pathfinding*) pada grid 2D, dib
 - Library:
   - [`pygame`](https://www.pygame.org/) – grafis dan input
   - [`Pillow`](https://python-pillow.org/) – membuka screenshot
-  - [`numpy`](https://numpy.org/) – diimpor oleh program
+  - [`numpy`](https://numpy.org/) – operasi matematika
 - **Tkinter** (bawaan Python di Windows & macOS; di Linux mungkin perlu dipasang terpisah)
 - File gambar **`STARTEND.png`** di folder yang sama dengan skrip (dipakai sebagai ikon titik awal/akhir).
 
@@ -84,8 +84,8 @@ Aplikasi visualisasi algoritma pencarian jalur (*pathfinding*) pada grid 2D, dib
 1. **Clone repository**
 
 ```bash
-   git clone https://github.com/<username>/<nama-repo>.git
-   cd <nama-repo>
+   git clone https://github.com/irvashellaurbach-png/AI-TE703.git
+   cd AI-TE703/search_algorithm
 ```
 
 2. **(Opsional) Buat virtual environment**
@@ -116,11 +116,11 @@ Aplikasi visualisasi algoritma pencarian jalur (*pathfinding*) pada grid 2D, dib
 
 ## ▶️ Cara Menjalankan
 
-```bash
-python main.py
-```
+Dari dalam folder `search_algorithm`, jalankan:
 
-> Ganti `main.py` dengan nama file skrip kamu.
+```bash
+python Pathfinder.Comparison.py
+```
 
 ---
 
@@ -150,25 +150,25 @@ Semua pengujian memakai skenario yang sama: sebuah **dinding vertikal (abu-abu)*
 
 ### 1. A\* (A-Star)
 
-![Hasil running A*](images/search_algorithm.png)
+![Hasil running A*](search_algorithm.png)
 
-Sel yang dikunjungi berwarna **biru** dan jalur akhir berwarna **kuning**. A\* menyusuri sisi atas grid menuju tujuan dengan bantuan heuristik jarak Manhattan. Ketika terhalang dinding, A\* berputar mengelilingi ujung dinding lalu kembali naik ke titik tujuan. Jalur yang dihasilkan adalah **jalur terpendek**.
+Sel yang dikunjungi berwarna **biru** dan jalur akhir berwarna **kuning**. A\* dipandu heuristik jarak Manhattan sehingga penjelajahannya terarah ke titik tujuan. Ketika terhalang dinding, A\* berputar mengelilingi ujung dinding lalu naik ke titik tujuan. Jalur yang dihasilkan adalah **jalur terpendek**.
 
 ### 2. Dijkstra
 
-![Hasil running Dijkstra](images/HASIL_RUNNING_DIJKSTRA.jpeg)
+![Hasil running Dijkstra](HASIL%20RUNNING%20DIJKSTRA.jpeg)
 
 Sel yang dikunjungi berwarna **hijau**. Dijkstra menyebar ke **segala arah secara merata** (tanpa heuristik) sehingga hampir seluruh grid terjelajahi sebelum tujuan ditemukan. Jalur kuning mengitari ujung bawah dinding dan berakhir di titik tujuan. Jalur yang dihasilkan adalah **jalur terpendek**.
 
 ### 3. BFS (Breadth-First Search)
 
-![Hasil running BFS](images/HASIL_RUNNING_BFS.jpeg)
+![Hasil running BFS](HASIL%20RUNNING%20BFS.jpeg)
 
 Sel yang dikunjungi berwarna **ungu**. BFS menjelajah **lapis demi lapis** dari titik awal sehingga pola penyebarannya mirip Dijkstra. Jalur kuning juga melewati celah di bawah dinding. Panjang jalurnya **sama dengan Dijkstra** karena pada grid tanpa bobot keduanya sama-sama optimal; bentuk jalur bisa sedikit berbeda karena urutan tetangga yang diproses.
 
 ### 4. DFS (Depth-First Search)
 
-![Hasil running DFS](images/HASIL_RUNNING_DFS.jpeg)
+![Hasil running DFS](HASIL%20RUNNING%20DFS.jpeg)
 
 Sel yang dikunjungi berwarna **oranye**, sedangkan area **hitam** adalah sel yang tidak pernah dikunjungi. DFS menyelam sedalam mungkin sebelum mundur dan urutan tetangganya diacak, sehingga jalur kuning yang dihasilkan **sangat berkelok dan panjang**. Inilah alasan DFS **tidak menjamin jalur terpendek**, dan hasilnya bisa berbeda setiap kali dijalankan.
 
@@ -218,15 +218,17 @@ Sel yang dikunjungi berwarna **oranye**, sedangkan area **hitam** adalah sel yan
 ## 🗂️ Struktur Proyek
 
 ```
-.
-├── main.py          # Skrip utama (logika algoritma, UI, dan event loop)
-├── STARTEND.png     # Ikon penanda titik awal & akhir
-├── images/          # Screenshot hasil running untuk dokumentasi
-│   ![Hasil running A*](search_algorithm.png)
-![Hasil running Dijkstra](HASIL_RUNNING_DIJKSTRA.jpeg)
-![Hasil running BFS](HASIL_RUNNING_BFS.jpeg)
-![Hasil running DFS](HASIL_RUNNING_DFS.jpeg)
-├── maze.png         # (dibuat otomatis) hasil screenshot saat menekan "S"
+search_algorithm/
+├── Pathfinder.Comparison.py          # Skrip utama (algoritma, UI, dan event loop)
+├── STARTEND.png                      # Ikon penanda titik awal & akhir
+├── Algorithm Sketch(script)          # Dokumen pendukung
+├── Practicalities of Pathfinding(POP)# Dokumen pendukung
+├── Pseudocode (Logic Description)    # Dokumen pendukung (pseudocode)
+├── search_algorithm.png              # Screenshot hasil A*
+├── HASIL RUNNING DIJKSTRA.jpeg       # Screenshot hasil Dijkstra
+├── HASIL RUNNING BFS.jpeg            # Screenshot hasil BFS
+├── HASIL RUNNING DFS.jpeg            # Screenshot hasil DFS
+├── maze.png                          # (dibuat otomatis) screenshot saat menekan "S"
 └── README.md
 ```
 
@@ -292,10 +294,12 @@ Beberapa konstanta di bagian atas kode dapat kamu ubah:
 
 ## ⚠️ Batasan & Catatan
 
-- Pada pengaturan default, **grid logis (100×100)** lebih besar daripada area yang tampil di jendela (800×600 dengan sel 20 px ≈ 40×30 sel). Sebaiknya tentukan titik awal dan akhir **di dalam area yang terlihat**, dan sesuaikan `GRID_SIZE` bila perlu.
+- Pastikan titik awal dan titik akhir berada **di dalam area grid yang terlihat di jendela**. Jika `GRID_SIZE` lebih besar dari area layar (`SCREEN_SIZE` ÷ `CELL_SIZE`), sebagian grid tidak tampil.
 - Waktu yang dicetak di terminal **sudah termasuk delay visualisasi**, sehingga bukan ukuran performa murni algoritma kecuali delay diatur ke 0.
 - Pergerakan hanya **4 arah** (atas, bawah, kiri, kanan), tanpa diagonal.
 - Program memerlukan file `STARTEND.png`; tanpa file tersebut, pemasangan titik awal/akhir akan menimbulkan error.
 - Mengubah **Cell Size** lewat slider hanya menggambar ulang grid; untuk hasil terbaik, atur sebelum memilih algoritma.
 - Tekan `ESC` saat algoritma berjalan untuk menghentikannya.
+
+---
 
