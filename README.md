@@ -1,23 +1,30 @@
 # AI-TE703
 
 ## Introduction
-Program ini adalah sistem pakar untuk merekomendasikan karier berdasarkan minat dan kemampuan pengguna. Pengguna menjawab serangkaian pertanyaan, lalu sistem menggunakan aturan if-then (forward chaining) untuk menentukan karier yang paling sesuai, misalnya Software Engineer, Data Analyst, atau UI/UX Designer.
-
-Program juga menerapkan algoritma BFS (Breadth-First Search) untuk mencari jalur pengembangan karier tersingkat dari kondisi pengguna menuju karier yang direkomendasikan.
+Proyek ini terdiri dari dua program:
+1. **Sistem Pakar Rekomendasi Karier**: merekomendasikan karier berdasarkan jawaban pengguna menggunakan aturan if-then (forward chaining).
+2. **Pathfinding Visualizer**: visualisasi algoritma pencarian jalur pada grid dengan empat algoritma, yaitu A*, Dijkstra, BFS, dan DFS, sehingga cara kerja dan hasil tiap algoritma bisa dibandingkan.
 
 ## Requirements
 - Python 3.x
-- Tidak ada library tambahan
+- pygame
+- numpy
+- Pillow
+
+Instal library dengan:
+`pip install pygame numpy pillow`
 
 ## How to Use
 1. Clone repository:
    `git clone https://github.com/priscillauren/AI-TE703.git`
 2. Masuk ke folder proyek:
    `cd AI-TE703`
-3. Jalankan program:
-   `python main.py`
-4. Jawab pertanyaan yang muncul dengan `y` (yes) atau `n` (no).
-5. Sistem akan menampilkan rekomendasi karier beserta jalur pengembangannya.
+3. Instal library (lihat Requirements).
+4. Jalankan sistem pakar:
+   `python expert_system/sistem_pakar_karier.py`
+5. Jalankan pathfinding visualizer:
+   `python search_algorithm/Pathfinder.Comparison.py`
+6. Ikuti instruksi yang muncul di layar (jawab `y`/`n` untuk sistem pakar, pilih algoritma lewat jendela GUI untuk visualizer).
 
 ## Running
-(Tempel screenshot hasil running di sini setelah program jadi)
+(Tempel screenshot hasil running kedua program di sini.)
