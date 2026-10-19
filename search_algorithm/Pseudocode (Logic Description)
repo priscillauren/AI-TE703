@@ -1,0 +1,535 @@
+# Import necessary libraries                     
+import random  # Import the random module for shuffling neighbors in DFS
+import pygame  # Import the pygame library for graphical visualization
+import heapq  # Import the heapq module for priority queue implementation in Dijkstra's and A*
+import tkinter as tk  # Import tkinter as tk for creating GUI for algorithm selection
+import numpy as np # import numpy as np for numerical operations
+from collections import deque  # Import deque from collections for implementing the queue in BFS
+from tkinter import messagebox  # Import messagebox from tkinter for displaying message boxes in tkinter GUI
+from tkinter import Scale  # For adding the slider
+from PIL import Image  # Import PIL library for image manipulation
+
+# Constants for algorithm selection
+ASTAR = 1
+DIJKSTRA = 2
+BFS = 3
+DFS = 4
+
+# Constants                                                                                    
+WHITE = (255, 255, 255)  # RGB values for white color
+BLACK = (0, 0, 0)  # RGB values for black color
+RED = (255, 0, 0)  # RGB values for red color
+GREEN = (0, 255, 0)  # RGB values for green color
+BLUE = (0, 0, 255)  # RGB values for blue color
+YELLOW = (255, 255, 0)  # RGB values for yellow color
+GRAY = (128, 128, 128)  # RGB values for gray color
+PURPLE = (128, 0, 128)  # RGB values for purple color
+ORANGE = (255, 165, 0)  # RGB values for orange color
+
+
+GRID_SIZE = 100  # Number of cells in each row/column of the grid
+CELL_SIZE = 20  # Size of each cell in pixels
+SCREEN_SIZE = (800,600)   #800,600 or 1278,660 ,Size of the Pygame window
+
+# Define Start and End (Grid Range) for algorithms to work on.
+START = (0, 0)
+END = (GRID_SIZE - 1, GRID_SIZE - 1)
+
+# Initialize pygame
+pygame.init()
+
+# Initialize Pygame window
+Create Pygame window with size SCREEN_SIZE
+Set window caption to "Pathfinding Visualization"
+
+# Define a set to keep track of modified cells:
+    modified_cells = set()
+
+# Default delay for visualization
+DELAY = 50  #(milliseconds)
+DELAY_VISITED= 10  #(milliseconds)
+
+# Function to draw the grid
+Function draw_grid():
+   # Loop to draw horizontal grid lines
+    For each x-coordinate from 0 to SCREEN_SIZE[0] with step CELL_SIZE:
+        Draw a line on the window with color WHITE from (x, 0) to (x, SCREEN_SIZE[1])
+   # Loop to draw vertical grid lines
+    For each y-coordinate from 0 to SCREEN_SIZE[1] with step CELL_SIZE:
+        Draw a line on the window with color WHITE from (0, y) to (SCREEN_SIZE[0], y)
+
+# Function to draw a colored cell at a specific position with elevation effect
+Function draw_cell with parameters color and position:
+    If color is YELLOW, RED, or GRAY:
+        Draw the cell without applying darkness effect
+    Else:
+        Calculate distance from bottom-right corner (distance_x, distance_y)
+        Calculate max_distance as maximum of distance_x and distance_y
+        Calculate darkness_factor as (max_distance / (GRID_SIZE - 1))^2
+        Calculate elevated_color by darkening the original color based on darkness_factor
+
+         # Draw the cell on the Pygame window at the specified position with elevated_color
+        Draw a rectangle on the Pygame window:
+            - Position: (position[0] * CELL_SIZE, position[1] * CELL_SIZE)
+            - Size: (CELL_SIZE, CELL_SIZE)
+            - Color: elevated_color
+
+         # Get the current color of the cell if it's already modified
+         Get the current color of the cell:
+            - X-coordinate: position[0] * CELL_SIZE + CELL_SIZE // 2
+            - Y-coordinate: position[1] * CELL_SIZE + CELL_SIZE // 2
+
+         # Interpolate between the current color and the elevated color for smooth transition
+        Set transition_frames to the number of frames for transition (e.g., 10)
+        Loop from 0 to transition_frames:
+             Calculate interpolation factor t as i divided by transition_frames
+             Interpolate color components:
+            - Interpolated red component: current_color[0] * (1 - t) + elevated_color[0] * t
+            - Interpolated green component: current_color[1] * (1 - t) + elevated_color[1] * t
+            - Interpolated blue component: current_color[2] * (1 - t) + elevated_color[2] * t
+         Draw the cell on the Pygame window with the interpolated color:
+            - Position: (position[0] * CELL_SIZE, position[1] * CELL_SIZE)
+            - Size: (CELL_SIZE, CELL_SIZE)
+            - Color: interpolated_color
+
+         Update the display for each frame
+         Wait for a short duration to control frame rate (e.g., 10 milliseconds)
+        
+    # Add the modified cell position to the set modified_cells
+    Add position to modified_cells
+
+# Function to visualize the path with a delay
+Function visualize_path(path, color):
+    For each cell in path:
+        Draw the cell with the specified color on the window
+        Update the window display
+        Wait for DELAY
+
+# Reset the screen, draw the grid, and update the display
+Function reset():
+    Fill the window with color BLACK
+    Call draw_grid()
+    # Clear the set of modified cells
+    modified_cells.clear()
+    Update the window display
+
+# Dijkstra's algorithm
+Function dijkstra(start, end, obstacles):
+    Create an empty priority queue heap with initial element (0, start, [])
+    Create an empty set visited
+    Set paused to False
+
+    While heap is not empty:
+        Loop through each event in pygame.event.get():
+            If the event type is QUIT:
+              Quit pygame
+              Return
+            Else if the event type is KEYDOWN and the key pressed is ESCAPE:
+              Return
+            If the event type is KEYDOWN and the key pressed is P:
+              Toggle the value of the paused variable.
+
+        If paused is True:
+           Continue to the next iteration of the loop.
+
+        Pop the element with the smallest cost, current position, and path from heap
+
+        If current position is in visited:
+            Continue to the next iteration
+
+        Add current position to visited
+
+        If current position is not the start or end, and not an obstacle:
+            Draw the cell with color GREEN on the window
+            Wait for a duration of time specified by the variable DELAY_VISITED
+
+        If current position is the end:
+            Call visualize_path with the current path and color YELLOW
+            Return from the function
+
+        For each neighbor in neighbors(current position):
+            If neighbor is not in visited and not an obstacle:
+                Push (cost + 1, neighbor, path + [current]) onto heap
+
+        Update the window display
+
+        Wait in pygame for DELAY
+
+     # If the loop completes without finding the end node, display a message
+    messagebox to show info("Dijkstra", "End node not reachable!")    
+
+# A* algorithm
+Function astar(start, end, obstacles):
+    Create an empty priority queue heap with initial element (0, start, [])
+    Create an empty set visited
+    Set paused to False
+
+    While heap is not empty:
+        Loop through each event in pygame.event.get():
+            If the event type is QUIT:
+                  Quit pygame
+                  Return
+                Else if the event type is KEYDOWN and the key pressed is ESCAPE:
+                  Return
+                If the event type is KEYDOWN and the key pressed is P:
+                  Toggle the value of the paused variable.
+
+        If paused is True:
+           Continue to the next iteration of the loop.
+
+        Pop the element with the smallest cost, current position, and path from heap
+
+        If current position is in visited:
+            Continue to the next iteration
+
+        Add current position to visited
+
+        If current position is not the start or end, and not an obstacle:
+            Draw the cell with color BLUE on the window
+            Wait in pygame for DELAY_VISITED
+
+        If current position is the end:
+            Call visualize_path with the current path and color YELLOW
+            Return from the function
+
+        For each neighbor in neighbors(current position):
+            If neighbor is not in visited and not an obstacle:
+                Push (cost + 1 + heuristic(neighbor, end), neighbor, path + [current]) onto heap
+
+        Update the window display
+
+        Wait in pygame for DELAY
+
+      # If the loop completes without finding the end node, display a message
+   messagebox to show info("A*", "End node not reachable!")
+
+# DFS algorithm
+Function dfs(start, end, obstacles):
+    Create an empty stack with initial element (start, [])
+    Create an empty set visited
+    Set paused to False
+
+    While stack is not empty:
+        Loop through each event in pygame.event.get():
+            If the event type is QUIT:
+                  Quit pygame
+                  Return
+                Else if the event type is KEYDOWN and the key pressed is ESCAPE:
+                  Return
+                If the event type is KEYDOWN and the key pressed is P:
+                  Toggle the value of the paused variable.
+
+        If paused is True:
+           Continue to the next iteration of the loop.
+
+        Pop the element with current position and path from stack
+
+        If current position is in visited:
+            Continue to the next iteration
+
+        Add current position to visited
+
+        If current position is not the start or end, and not an obstacle:
+            Draw the cell with color ORANGE on the window
+            Wait in pygame for DELAY_VISITED
+
+        If current position is the end:
+            Call visualize_path with the current path and color YELLOW
+            Return from the function
+
+        Shuffle the list of neighbors of the current position
+
+        For each neighbor in the shuffled list:
+            If neighbor is not in visited and not an obstacle:
+                Push (neighbor, path + [current]) onto stack
+
+        Update the window display
+
+        Wait in pygame for DELAY
+
+      # If the loop completes without finding the end node, display a message
+    messagebox to show info("DFS", "End node not reachable!")
+
+# BFS algorithm
+Function bfs(start, end, obstacles):
+    Create an empty queue with initial element (start, [])
+    Create an empty set visited
+    Set paused to False
+
+    While queue is not empty:
+        Loop through each event in pygame.event.get():
+            If the event type is QUIT:
+                  Quit pygame
+                  Return
+                Else if the event type is KEYDOWN and the key pressed is ESCAPE:
+                  Return
+                If the event type is KEYDOWN and the key pressed is P:
+                  Toggle the value of the paused variable.
+
+        If paused is True:
+           Continue to the next iteration of the loop.
+
+        Dequeue the element with current position and path from queue
+
+        If current position is in visited:
+            Continue to the next iteration
+
+        Add current position to visited
+
+        If current position is not the start or end, and not an obstacle:
+            Draw the cell with color PURPLE on the window
+            Wait in pygame for DELAY_VISITED
+
+        If current position is the end:
+            Call visualize_path with the current path and color YELLOW
+            Return from the function
+
+        For each neighbor in neighbors(current position):
+            If neighbor is not in visited and not an obstacle:
+                Enqueue (neighbor, path + [current]) onto queue
+
+        Update the window display
+
+        Wait in pygame for DELAY
+
+     # If the loop completes without finding the end node, display a message
+    messagebox to show info("BFS", "End node not reachable!")
+
+# Heuristic function for A*
+Function heuristic(point, goal):
+    Return the sum of absolute differences between point[0] and goal[0], and point[1] and goal[1]
+
+# Function to get valid neighbors for a cell
+Function neighbors(cell):
+    Extract x and y from cell
+
+    Initialize an empty list valid_neighbors
+
+    If x > 0:
+        Append (x - 1, y) to valid_neighbors
+    If x < GRID_SIZE - 1:
+        Append (x + 1, y) to valid_neighbors
+    If y > 0:
+        Append (x, y - 1) to valid_neighbors
+    If y < GRID_SIZE - 1:
+        Append (x, y + 1) to valid_neighbors
+
+    Return valid_neighbors
+
+Function remove_obstacle(cell, obstacles):
+    If cell is in obstacles:
+        Remove cell from obstacles
+        # Redraw the cell with black color to cover the obstacle
+        draw_cell(BLACK, cell)
+        
+        # Redraw the surrounding lines only for the specific cell
+        x, y = cell
+        x_pixel = x * CELL_SIZE
+        y_pixel = y * CELL_SIZE
+        
+        # Redraw the horizontal line above the removed obstacle
+        If y > 0:
+            Draw a line on the window with color WHITE from (x_pixel, y_pixel) to (x_pixel + CELL_SIZE, y_pixel)
+        
+        # Redraw the horizontal line below the removed obstacle
+        If y < GRID_SIZE - 1:
+            Draw a line on the window with color WHITE from (x_pixel, y_pixel + CELL_SIZE) to (x_pixel + CELL_SIZE, y_pixel + CELL_SIZE)
+        
+        # Redraw the vertical line to the left of the removed obstacle
+        If x > 0:
+            Draw a line on the window with color WHITE from (x_pixel, y_pixel) to (x_pixel, y_pixel + CELL_SIZE)
+        
+        # Redraw the vertical line to the right of the removed obstacle
+        If x < GRID_SIZE - 1:
+            Draw a line on the window with color WHITE from (x_pixel + CELL_SIZE, y_pixel) to (x_pixel + CELL_SIZE, y_pixel + CELL_SIZE)
+        
+        Update the display
+
+
+# Function to generate a random maze with obstacles
+Function generate_random_maze(obstacles):
+     for i in range(GRID_SIZE):
+        for j in range(GRID_SIZE):
+             set the probability of random obstacles() < 0.3: #adjust the probability 
+                   cell = (i, j)
+                if cell not in (START, END):
+                    add obstacles(cell)
+                    draw_cell(GRAY, cell)
+
+# Function to create GUI menu for algorithm selection
+Function create_menu():
+    Create a tkinter window
+    Set the title of the window to "Algorithm Selection"
+
+# Create an integer variable to hold the state of the maze checkbox
+    maze_var = IntegerVariable()
+# Create a checkbox widget labeled "Maze" and associate it with the maze_var variable
+    maze_checkbox = CreateCheckboxWidget(parent=root, text="Maze", variable=maze_var)
+# Pack the checkbox widget into the parent widget (root)
+    PackWidget(widget=maze_checkbox)
+
+    Define a function to select an algorithm:
+        Close the menu window
+        Run the selected algorithm (algorithm, get maze variable())
+
+    Display a label indicating "Visualization Delay"
+    Create a slider widget named delay_slider
+    Set the range of the slider from 0 to 200
+    Set the orientation of the slider to horizontal
+    Set the length of the slider to 200 pixels
+    Set the initial value of the slider to a default value defined by the variable DELAY
+    Display the slider widge
+
+    
+    Display a label indicating "Cell Size"
+    Create a slider widget named cell_size_slider
+    Set the range of the slider from 20 to 50
+    Set the orientation of the slider to horizontal
+    Set the length of the slider to 200 pixels
+    Set the command to call a function resize_cell_size when the slider value changes
+    Set the initial value of the slider to a default value defined by the variable CELL_SIZE
+    Display the slider widget
+
+    Function select_algorithm with parameter algorithm:
+       Set global variable DELAY to the current value of delay_slider
+       Close the graphical interface window
+       Run the algorithm selected with the specified maze variation
+
+    Add labels and buttons for each algorithm option:
+        Button for A* algorithm
+        Button for Dijkstra's algorithm
+        Button for BFS algorithm
+        Button for DFS algorithm
+
+    Start the tkinter event loop
+
+# Main function
+Function run_algorithm(selected_algorithm, create_maze):
+    Call reset() 
+    obstacles = set()
+    if create_maze is selected:
+        generate_random_maze(obstacles)
+    # Create a dictionary mapping algorithm constants to their names
+    algorithm_name = {
+      ASTAR: "A* Algorithm",
+      DIJKSTRA: "Dijkstra's Algorithm",
+      BFS: "BFS Algorithm",
+      DFS: "DFS Algorithm"
+    }
+
+# Set the caption for the Pygame display window
+    Set the window caption to "Pathfinding Visualization - " concatenated with the name of the selected algorithm from algorithm_name.
+
+    Set running to true
+    Set start_set to false
+    Set end_set to false
+    Set start to START
+    Set end to END
+   
+    Set drawing_obstacle to false
+
+    While running is true:
+        For each event in pygame.event.get():
+            If event type is QUIT:
+                Set running to false
+            Else if event type is KEYDOWN:
+                If event key is SPACE:
+                    If start_set is true and end_set is true:
+                        Create empty paths dijkstra_path, astar_path, dfs_path, bfs_path
+
+                        Record the start time for Dijkstra's algorithm
+                        Call dijkstra with start, end, and obstacles
+                        Record the end time for Dijkstra's algorithm
+                        Print "Dijkstra's Algorithm Time:", end time - start time, "ms"
+
+                        Record the start time for A* algorithm
+                        Call astar with start, end, and obstacles
+                        Record the end time for A* algorithm
+                        Print "A* Algorithm Time:", end time - start time, "ms"
+
+                        Record the start time for DFS algorithm
+                        Call dfs with start, end, and obstacles
+                        Record the end time for DFS algorithm
+                        Print "DFS Algorithm Time:", end time - start time, "ms"
+
+                        Record the start time for BFS algorithm
+                        Call bfs with start, end, and obstacles
+                        Record the end time for BFS algorithm
+                        Print "BFS Algorithm Time:", end time - start time, "ms"
+                    Else:
+                        messagebox to show info("Error", "Start and/or end points are not set.")             
+                Else if event key is C:
+                    Set start_set to false
+                    Set end_set to false
+                    Set start to START
+                    Set end to END
+                    Create an empty set obstacles
+                    Call reset()
+               Else if event key is ESCAPE:
+                    create_menu()
+               Else If event.key is equal to pygame.K_1:  # Shortcut for A*
+                    selected_algorithm = ASTAR 
+               Else If event.key is equal to pygame.K_2:  # Shortcut for Dijkstra's
+                    selected_algorithm = DIJKSTRA
+               Else If event.key is equal to pygame.K_3:  # Shortcut for BFS
+                    selected_algorithm = BFS
+               Else If event.key is equal to pygame.K_4:  # Shortcut for DFS
+                    selected_algorithm = DFS
+               If the pressed key is M:
+                    Generate a random maze using the obstacles parameter.
+               Else if the pressed key is S:
+                    Save the current screen as "maze.png" and display it using an external image viewer.
+               Else if the pressed key is EQUALS or PLUS:
+                    Increase the value of DELAY by 10.
+               Else if the pressed key is MINUS:
+                    Decrease the value of DELAY by 10, ensuring it doesn't go below 0.
+               Else if the pressed key is 0:
+                    Decrease the value of DELAY_VISITED by 10, ensuring it doesn't go below 0.
+               Else if the pressed key is 9:
+                    Increase the value of DELAY_VISITED by 10.
+
+            Else if event type is MOUSEBUTTONDOWN:
+                Set pos to pygame.mouse.get_pos()
+                Set cell_pos to (pos[0] // CELL_SIZE, pos[1] // CELL_SIZE)
+
+                If start_set is false:
+                    Set start to cell_pos
+                    #Call draw_cell with color RED and start
+                    Load the image "STARTEND.png" with alpha channel transparency.
+                    Convert the image to the appropriate format for display.
+                    Resize the image to match the cell size (CELL_SIZE, CELL_SIZE).
+                    Draw the image on the Pygame window at the position of the start cell.
+                    Set start_set to true
+                Else if end_set is false and cell_pos is not equal to start:
+                    Set end to cell_pos
+                    #Call draw_cell with color RED and end
+                    Load the image "STARTEND.png" with alpha channel transparency.
+                    Convert the image to the appropriate format for display.
+                    Resize the image to match the cell size (CELL_SIZE, CELL_SIZE).
+                    Draw the image on the Pygame window at the position of the end cell.
+                    Set end_set to true
+                Else:
+                    Add cell_pos to obstacles
+                    #Call draw_cell with color GRAY and cell_pos
+                    Set drawing_obstacle to true
+            Else if event type is MOUSEMOTION and drawing_obstacle is true:
+                Set pos to pygame.mouse.get_pos()
+                Set cell_pos to (pos[0] // CELL_SIZE, pos[1] // CELL_SIZE)
+                Add cell_pos to obstacles
+                Call draw_cell with color GRAY and cell_pos
+            Else if event type is MOUSEBUTTONUP:
+                Set drawing_obstacle to false
+
+        Update the window display
+
+    Call pygame.quit()
+
+Function main():
+    Show algorithm selection menu
+
+# Entry point
+If __name__ is equal to "__main__":
+    Call main()
+
+If you want more detailed pseudocode for specific functions or sections, feel free to ask!
+PS: I plan on adding new algorithms and some new functions(maze generation, grid resizing etc) that may change or make my previous codes/descs obsolete.
